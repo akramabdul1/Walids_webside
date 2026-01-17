@@ -282,8 +282,17 @@
 
          // Funktioner för att öppna/stänga modal
         function openModal(id) {
-            document.getElementById(id).classList.add('active');
-            document.body.style.overflow = 'hidden'; // Stoppa scrollning när modal är öppen
+            const modal = document.getElementById(id);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (id === 'tjanst-1') {
+                setTimeout(() => {
+                    if (!map) {
+                        initMap();
+                    }
+                    map.invalidateSize(); 
+                }, 300); 
+            }
         }
         
         function closeModal(id) {
