@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öster Vägassistans | Snabb hjälp dygnet runt</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(199, 128, 7, 0); backdrop-filter: blur(10px); }
+        .hero-gradient { background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.4)); }
+        .modal { 
+        display: none; 
+        position: fixed; 
+        z-index: 100; 
+        inset: 0; 
+        background: rgba(0,0,0,0.7); 
+        backdrop-filter: blur(5px); 
+    }
+    .modal.active { 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+    }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 glass border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0">
+                <a href="/">
+                    <img src="HH_walid.png" alt="HH Express Logo" class="h-44 md:h-48 w-auto object-contain">
+                </a>
+            </div>
+                <div class="hidden md:flex space-x-8 font-bold text-sm uppercase tracking-wider">
+                    <a href="#" class="text-red-600 hover:text-orange-500 transition">Hem</a>
+                    <a href="#tjanster" class="text-red-600 hover:text-orange-500 transition">Tjänster</a>
+                    <a href="#om-oss" class="text-red-600 hover:text-orange-500 transition">Om oss</a>
+                    <a href="#process" class="text-red-600 hover:text-orange-500 transition">Kontakt</a>
+                </div>
+                <div>
+                    <a href="tel:0424494249" class="bg-orange-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-orange-600 transition-all flex items-center gap-2">
+                        <i data-lucide="phone-call" class="w-4 h-4"></i> 042-449 42 49
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative h-screen flex items-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="FramBild.png" class="w-full h-full object-cover" alt="Bärgningsbil">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+            <div data-aos="fade-right" data-aos-duration="1000">
+                <span class="inline-block px-4 py-1 bg-orange-500 text-white rounded-md text-xs font-bold uppercase tracking-widest mb-6">Tillgängliga 24/7</span>
+                <h1 class="text-5xl md:text-8xl font-black leading-none mb-6 italic uppercase">
+                    <span class="font-black text-white ">Vi hjälper dig</span><br>
+                    <span class="text-red-500 decoration-yellow-500">vidare på vägen</span>
+                </h1>
+                <p class="text-xl text-slate-300 max-w-xl mb-10 border-l-4 border-red-600 pl-6">
+                    Professionell service inom bärgning, godstransport & chaufförsuthyrning. Snabbare, säkrare, enklare.
+                </p>
+                <button onclick="window.location.href='tel:0424494249'" class="bg-orange-500 hover:bg-orange-600 text-white px-10 py-5 rounded-xl font-bold text-lg shadow-2xl uppercase italic transition-all">
+                    Behöver akut bärgning
+                </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ <section id="tjanster" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl font-black text-slate-900 mb-4 uppercase italic">Våra <span class="text-red-600">Tjänster</span></h2>
+                <div class="w-20 h-1.5 bg-yellow-500 mx-auto rounded-full"></div>
+                <p class="mt-4 text-slate-500 font-medium italic">Klicka på en tjänst för att läsa mer & boka</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div onclick="openModal('tjanst-1')" class="cursor-pointer p-8 rounded-3xl border border-slate-100 bg-slate-50 hover:shadow-2xl hover:-translate-y-2 transition-all group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 mb-6 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        <i data-lucide="truck"></i>
+                    </div>
+                    <h3 class="text-xl font-black mb-3 text-slate-900 uppercase italic">Bilbärgning & vägassistans</h3>
+                    <p class="text-slate-600 mb-4">Trygg bärgning för personbil & lätt lastbil dygnet runt.</p>
+                    <span class="text-red-600 font-bold text-sm uppercase flex items-center gap-2">Läs mer & boka <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                </div>
+
+                <div onclick="openModal('tjanst-2')" class="cursor-pointer p-8 rounded-3xl border border-slate-100 bg-slate-50 hover:shadow-2xl hover:-translate-y-2 transition-all group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 mb-6 group-hover:bg-yellow-500 group-hover:text-white transition-colors">
+                        <i data-lucide="package"></i>
+                    </div>
+                    <h3 class="text-xl font-black mb-3 text-slate-900 uppercase italic">Godstransport</h3>
+                    <p class="text-slate-600 mb-4">Kvalitetssäkrade transporter för företag med höga krav.</p>
+                    <span class="text-red-600 font-bold text-sm uppercase flex items-center gap-2">Läs mer & boka <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                </div>
+
+                <div onclick="openModal('tjanst-3')" class="cursor-pointer p-8 rounded-3xl border border-slate-100 bg-slate-50 hover:shadow-2xl hover:-translate-y-2 transition-all group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 bg-slate-200 rounded-2xl flex items-center justify-center text-slate-900 mb-6 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                        <i data-lucide="user-plus"></i>
+                    </div>
+                    <h3 class="text-xl font-black mb-3 text-slate-900 uppercase italic leading-tight">Konsult & Chaufförsuthyrning C/CE</h3>
+                    <p class="text-slate-600 mb-4">Erfarna chaufförer för tunga fordon när du behöver extra resurser.</p>
+                    <span class="text-red-600 font-bold text-sm uppercase flex items-center gap-2">Läs mer & boka <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <section id="process" class="py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="w-full md:w-1/2" data-aos="fade-right">
+                    <h2 class="text-4xl font-black mb-8 leading-tight">Så här går det till när <br><span class="text-orange-500">vi hjälper dig</span></h2>
+                    <div class="space-y-8">
+                        <div class="flex gap-6">
+                            <div class="flex-shrink-0 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold">1</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Du ringer oss</h4>
+                                <p class="text-slate-400">Vår växel svarar direkt & tar emot din position & problembeskrivning.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="flex-shrink-0 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold">2</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Bärgaren skickas ut</h4>
+                                <p class="text-slate-400">Närmaste bil larmas & du får ett SMS med beräknad ankomsttid.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="flex-shrink-0 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold">3</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Problemet löst</h4>
+                                <p class="text-slate-400">Vi fixar felet på plats eller bärgar dig till vald destination.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/3 rounded-3xl overflow-hidden shadow-2xl" data-aos="zoom-in">
+                    <img src="Lastbilar.webp" alt="Service worker">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white pt-24 pb-12 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-1 md:col-span-2">
+                    <span class="text-3xl font-black tracking-tighter text-slate-900 mb-6 block"><span class="text-orange-500">HH</span> <span class="text-red-600">EXPRESS</span></span>
+                    <p class="text-slate-500 max-w-sm">Din partner vid vägkanten. Vi erbjuder bärgning & vägassistans för alla fordonstyper, dygnet runt i hela närområdet.</p>
+                </div>
+                <div>
+                    <h5 class="font-bold text-slate-900 mb-6 uppercase tracking-widest text-sm">Meny</h5>
+                    <ul class="space-y-4 text-slate-600">
+                        <li><a href="#" class="hover:text-orange-500 transition">Hem</a></li>
+                        <li><a href="#tjanster" class="hover:text-orange-500 transition">Tjänster</a></li>
+                        <li><a href="#om-oss" class="hover:text-orange-500 transition">Om oss</a></li>
+                        <li><a href="#kontakt" class="hover:text-orange-500 transition">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold text-slate-900 mb-6 uppercase tracking-widest text-sm">Kontakt</h5>
+                    <ul class="space-y-4 text-slate-600 font-medium">
+                        <li class="flex items-center gap-3"><i data-lucide="map-pin" class="w-5 h-5 text-orange-500"></i> Storgatan 1, Staden</li>
+                        <li class="flex items-center gap-3"><i data-lucide="phone" class="w-5 h-5 text-orange-500"></i> 012-345 67 89</li>
+                        <li class="flex items-center gap-3"><i data-lucide="mail" class="w-5 h-5 text-orange-500"></i> info@osterassistans.se</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 pt-8 text-center text-slate-400 text-sm font-medium">
+                &copy; 2025 Öster Vägassistans. Designad för hastighet & säkerhet.
+            </div>
+        </div>
+        
+    <footer class="bg-slate-900 py-12 text-white text-center">
+        <p class="italic font-black uppercase tracking-widest">&copy; 2025 HH EXPRESS</p>
+    </footer>
+<div id="tjanst-1" class="modal px-4" onclick="closeModal('tjanst-1')">
+    <div class="bg-white rounded-3xl max-w-5xl w-full p-6 relative shadow-2xl flex flex-col md:flex-row gap-6" onclick="event.stopPropagation()">
+        
+        <div class="w-full md:w-2/5 space-y-4">
+            <h2 class="text-3xl font-black italic uppercase text-red-600">Prisberäkning</h2>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Var är du? (Stad/Adress)</label>
+                    <input type="text" id="start-pos" placeholder="T.ex. Helsingborg" class="w-full p-3 bg-slate-100 rounded-xl outline-none focus:ring-2 focus:ring-orange-500">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Vart ska vi?</label>
+                    <select id="dest-type" onchange="handleDestChange()" class="w-full p-3 bg-slate-100 rounded-xl mb-2">
+                        <option value="verkstad">Närmaste verkstad (Helsingborg)</option>
+                        <option value="egen">Egen vald adress</option>
+                    </select>
+                    <input type="text" id="end-pos" placeholder="Adress..." class="hidden w-full p-3 bg-slate-100 rounded-xl outline-none focus:ring-2 focus:ring-orange-500">
+                </div>
+
+                <button onclick="calculateFreeRoute()" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold uppercase text-sm hover:bg-black transition">
+                    Beräkna Pris
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-4">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <span class="block text-[10px] uppercase font-bold text-slate-400 italic">Avstånd</span>
+                    <span id="distance-res" class="text-xl font-black text-slate-900">0 km</span>
+                </div>
+                <div class="bg-orange-500 p-4 rounded-xl text-right shadow-lg shadow-orange-200">
+                    <span class="block text-[10px] uppercase font-bold text-orange-100 italic">Pris ca</span>
+                    <span id="price-display" class="text-xl font-black text-white">0 kr</span>
+                </div>
+            </div>
+
+            <a href="tel:0424494249" class="block w-full bg-red-600 text-white text-center py-4 rounded-xl font-black uppercase italic hover:bg-red-700 transition flex items-center justify-center gap-2">
+                <i data-lucide="phone-call" class="w-5 h-5"></i> Ring
+            </a>
+            <a href="tel:0424494249" class="block w-full bg-red-600 text-white text-center py-4 rounded-xl font-black uppercase italic hover:bg-red-700 transition flex items-center justify-center gap-2">
+                <i data-lucide="truck" class="w-5 h-5"></i> Boka
+            </a>
+        </div>
+
+        <div id="map" class="w-full md:w-3/5 h-[300px] md:h-auto bg-slate-100 rounded-2xl border-4 border-slate-50 z-0"></div>
+        
+        <button onclick="closeModal('tjanst-1')" class="absolute top-4 right-4 bg-white shadow-md p-2 rounded-full z-10">
+            <i data-lucide="x" class="w-5 h-5 text-slate-900"></i>
+        </button>
+    </div>
+</div>
+
+<div id="tjanst-2" class="modal px-4" onclick="closeModal('tjanst-2')">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-8 relative" onclick="event.stopPropagation()">
+        <button onclick="closeModal('tjanst-2')" class="absolute top-4 right-4 text-slate-400 hover:text-red-600">
+            <i data-lucide="x"></i>
+        </button>
+        <h2 class="text-3xl font-black italic uppercase text-red-600 mb-4">Godstransport</h2>
+        <p class="text-slate-600 mb-6">Vi utför punktliga & säkra godstransporter för företag. Vi anpassar oss efter era behov & garanterar högsta leveranssäkerhet. Kontakta oss för en kostnadsfri offert.</p>
+        <button class="bg-orange-500 text-white px-8 py-4 rounded-xl font-bold uppercase italic">Kontakt</button>
+    </div>
+</div>
+
+<div id="tjanst-3" class="modal px-4" onclick="closeModal('tjanst-3')">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-8 relative" onclick="event.stopPropagation()">
+        <button onclick="closeModal('tjanst-3')" class="absolute top-4 right-4 text-slate-400 hover:text-red-600">
+            <i data-lucide="x"></i>
+        </button>
+        <h2 class="text-3xl font-black italic uppercase text-red-600 mb-4">Chaufförsuthyrning</h2>
+        <p class="text-slate-600 mb-6">Vi erbjuder C/CE-chaufförskonsulter för kortare eller längre uppdrag. Vår personal är erfaren & redo att rycka in med kort varsel.</p>
+        <button class="bg-yellow-500 text-black px-8 py-4 rounded-xl font-bold uppercase italic">Boka chaufför</button>
+    </div>
+</div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initiera animationer
+        AOS.init({
+            duration: 800,
+            once: true,
+            easing: 'ease-out-cubic'
+        });
+
+        // Initiera ikoner
+        lucide.createIcons();
+
+         // Funktioner för att öppna/stänga modal
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden'; // Stoppa scrollning när modal är öppen
+        }
+        
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto'; // Tillåt scrollning igen
+        }
+
+        // Dynamisk Navbar effekt vid scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('shadow-md');
+            }
+        });
+    </script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let map;
+let markerGroup;
+
+// kartan laddas
+function initMap() {
+    map = L.map('map').setView([56.046, 12.694], 12); // Startfokus på Helsingborg
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    markerGroup = L.layerGroup().addTo(map);
+}
+
+// Kör initMap när öppnas en gång
+document.addEventListener('DOMContentLoaded', initMap);
+
+function handleDestChange() {
+    const type = document.getElementById('dest-type').value;
+    const endInput = document.getElementById('end-pos');
+    endInput.classList.toggle('hidden', type === 'verkstad');
+    if (type === 'verkstad') endInput.value = "Helsingborg City";
+}
+
+async function calculateFreeRoute() {
+    const startAddr = document.getElementById('start-pos').value;
+    const type = document.getElementById('dest-type').value;
+    const endAddr = type === 'verkstad' ? "Gåsebäcksvägen 12, Helsingborg" : document.getElementById('end-pos').value;
+
+    if (!startAddr || (type === 'egen' && !endAddr)) {
+        alert("Vänligen fyll i adresser");
+        return;
+    }
+
+    try {
+        // Gratis Geocoding (omvandla text till koordinater via Nominatim)
+        const getCoords = async (addr) => {
+            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addr)}`);
+            const data = await res.json();
+            return data.length > 0 ? [data[0].lat, data[0].lon] : null;
+        };
+
+        const startCoords = await getCoords(startAddr);
+        const endCoords = await getCoords(endAddr);
+
+        if (startCoords && endCoords) {
+            markerGroup.clearLayers();
+            const startPoint = L.marker(startCoords).addTo(markerGroup).bindPopup("Hämtas här");
+            const endPoint = L.marker(endCoords).addTo(markerGroup).bindPopup("Lämnas här");
+            
+            // Räkna ut avstånd (fågelvägen i meter, sen till km)
+            const distance = (map.distance(startCoords, endCoords) / 1000).toFixed(1);
+            
+            // Justera karta
+            const bounds = L.latLngBounds([startCoords, endCoords]);
+            map.fitBounds(bounds, {padding: [50, 50]});
+
+            // Prisgrejen
+            const startFee = 850;
+            const pricePerKm = 50;
+            const total = startFee + (distance * pricePerKm);
+
+            document.getElementById('distance-res').innerText = distance + " km";
+            document.getElementById('price-display').innerText = Math.round(total) + " kr";
+        }
+    } catch (error) {
+        console.error("Kunde inte beräkna rutt", error);
+    }
+}
+// av Walid al mome
+</script>
+
+
+</body>
+</html>
